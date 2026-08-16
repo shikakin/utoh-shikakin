@@ -1,0 +1,28 @@
+{
+  "slug": "clinic-slug",
+  "clinic_name": "〇〇歯科医院",
+  "clinic_hp": "https://example.jp/",
+  "reservation_url": "未設定",
+  "address": "未設定",
+  "phone": "未設定",
+  "access": "未設定",
+  "google_map_url": "未設定",
+  "hours_html": "未設定",
+  "symptoms": [],
+  "doctors": [
+    {
+      "name": "",
+      "position": "院長",
+      "role": "歯科医師 / シカキンマネジメントドクター",
+      "photo": "doctor-01.jpg"
+    }
+  ],
+  "therapists": [
+    {
+      "name": "",
+      "position": "シカキンセラピスト",
+      "role": "歯科衛生士 / シカキンセラピスト",
+      "photo": "therapist-01.jpg"
+    }
+  ]
+}
