@@ -1,0 +1,32 @@
+{
+  "slug": "fukuoka-dental-shinkawa",
+  "clinic_name": "医療法人社団明徳会 福岡歯科新川院",
+  "clinic_hp": "https://fukuokadental-s.tokyo/",
+  "reservation_url": "https://fukuokadental-s.tokyo/contact/",
+  "postal_code": "〒104-0033",
+  "address": "東京都中央区新川1-3-7 六甲第2ビル2F",
+  "phone": "03-3555-2222",
+  "access": "東京メトロ東西線・日比谷線「茅場町駅」3番出口 徒歩3分、東京メトロ半蔵門線「水天宮前駅」徒歩7分、JR京葉線「八丁堀駅」徒歩8分",
+  "google_map_url": "https://www.google.com/maps/embed?pb=%211m18%211m12%211m3%211d3240.9403577208823%212d139.77981895101405%213d35.67847053763318%212m3%211f0%212f0%213f0%213m2%211i1024%212i768%214f13.1%213m3%211m2%211s0x6018895ca0e20c4b%3A0x60114a33f9425b12%212z44CSMTA0LTAwMzMg5p2x5Lqs6YO95Lit5aSu5Yy65paw5bed77yR5LiB55uu77yT4oiS77yX%215e0%213m2%211sja%212sjp%214v1648055921856%215m2%211sja%212sjp",
+  "hours_html": "月・水・金 9:30〜13:00 / 14:00〜18:00<br>火・木 9:30〜13:00 / 14:00〜19:00<br>土 9:30〜13:00 / 14:00〜17:00<br>休診：日曜・祝日",
+  "line_url": "",
+  "symptoms": [],
+  "doctors": [
+    {
+      "name": "増田 勝実",
+      "position": "院長",
+      "role": "歯科医師",
+      "photo": "doctor-01.jpg",
+      "source_photo": "doctor-01.png"
+    }
+  ],
+  "therapists": [
+    {
+      "name": "本村翔子",
+      "position": "シカキンセラピスト",
+      "role": "シカキンセラピスト",
+      "photo": "therapist-01.jpg",
+      "source_photo": "therapist-01.png"
+    }
+  ]
+}

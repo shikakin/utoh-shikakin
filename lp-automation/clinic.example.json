@@ -2,19 +2,22 @@
   "slug": "clinic-slug",
   "clinic_name": "〇〇歯科医院",
   "clinic_hp": "https://example.jp/",
-  "reservation_url": "未設定",
-  "address": "未設定",
-  "phone": "未設定",
-  "access": "未設定",
-  "google_map_url": "未設定",
-  "hours_html": "未設定",
+  "reservation_url": "https://example.jp/reserve/",
+  "postal_code": "〒000-0000",
+  "address": "〇〇県〇〇市〇〇町0-0-0",
+  "phone": "000-0000-0000",
+  "access": "〇〇駅から徒歩〇分",
+  "google_map_url": "https://www.google.com/maps/",
+  "hours_html": "月〜金 9:00〜18:00<br>休診：日曜・祝日",
+  "line_url": "",
   "symptoms": [],
   "doctors": [
     {
       "name": "",
       "position": "院長",
       "role": "歯科医師 / シカキンマネジメントドクター",
-      "photo": "doctor-01.jpg"
+      "photo": "doctor-01.jpg",
+      "source_photo": "doctor-01.png"
     }
   ],
   "therapists": [
@@ -22,7 +25,8 @@
       "name": "",
       "position": "シカキンセラピスト",
       "role": "歯科衛生士 / シカキンセラピスト",
-      "photo": "therapist-01.jpg"
+      "photo": "therapist-01.jpg",
+      "source_photo": "therapist-01.png"
     }
   ]
 }

@@ -4,11 +4,19 @@ on:
   push:
     branches: [main]
     paths:
-      - 'lp-automation/clinics/**/clinic.json'
+      - 'shikakin_MASTER_LP_Ver3_mobile_safe_template.html'
+      - 'lp-automation/clinics/**'
       - 'lp-automation/build_lp.py'
       - 'lp-automation/validate_lp.py'
+      - 'lp-automation/restore_master.py'
+      - 'lp-automation/master-assets/**'
       - '.github/workflows/build-partner-lp.yml'
   workflow_dispatch:
+    inputs:
+      slug:
+        description: Existing clinic slug to rebuild
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -27,34 +35,70 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install validation dependency
+      - name: Install build dependencies
         run: python -m pip install --quiet Pillow
 
-      - name: Build and validate every clinic
+      - name: Select changed clinics
+        id: clinics
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_SLUG: ${{ inputs.slug }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          for cfg in lp-automation/clinics/*/clinic.json; do
-            slug="$(basename "$(dirname "$cfg")")"
-            echo "=== BUILD $slug ==="
-            python lp-automation/build_lp.py \
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            slugs="$MANUAL_SLUG"
+          else
+            slugs="$(git diff --name-only "$BEFORE_SHA" "$CURRENT_SHA" -- 'lp-automation/clinics/**' \
+              | awk -F/ 'NF >= 4 {print $3}' | sort -u | tr '\n' ' ')"
+          fi
+          for slug in $slugs; do
+            [[ "$slug" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid slug: $slug"; exit 1; }
+            test -f "lp-automation/clinics/$slug/clinic.json"
+          done
+          echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
+
+      - name: Verify foundation and build selected clinics
+        shell: bash
+        env:
+          SLUGS: ${{ steps.clinics.outputs.slugs }}
+        run: |
+          set -euo pipefail
+          python -m py_compile lp-automation/build_lp.py lp-automation/validate_lp.py lp-automation/restore_master.py
+          if [[ ! -f shikakin_MASTER_LP_Ver3_mobile_safe_template.html ]]; then
+            python lp-automation/restore_master.py \
               --source utoh_shikakin_lp_embedded.html \
+              --output shikakin_MASTER_LP_Ver3_mobile_safe_template.html
+          fi
+          sha256sum -c <<'EOF'
+          0b09fafe346e7bee633615ca99afe7ef0eaf50c867b393b767a62004a9da5b6d  shikakin_MASTER_LP_Ver3_mobile_safe_template.html
+          EOF
+          for slug in $SLUGS; do
+            cfg="lp-automation/clinics/$slug/clinic.json"
+            python lp-automation/build_lp.py \
+              --master shikakin_MASTER_LP_Ver3_mobile_safe_template.html \
               --config "$cfg" \
-              --output "$slug/index.html"
-            python lp-automation/validate_lp.py \
-              --dir "$slug" \
-              --config "$cfg"
+              --out "$slug"
+            python lp-automation/validate_lp.py --dir "$slug" --config "$cfg"
           done
 
       - name: Commit generated LPs
         shell: bash
+        env:
+          SLUGS: ${{ steps.clinics.outputs.slugs }}
         run: |
-          if git diff --quiet; then
+          set -euo pipefail
+          git add -- shikakin_MASTER_LP_Ver3_mobile_safe_template.html
+          for slug in $SLUGS; do
+            git add -- "$slug/index.html" "$slug/assets/"
+          done
+          if git diff --cached --quiet; then
             echo 'No generated changes.'
             exit 0
           fi
           git config user.name 'shikakin-lp-bot'
           git config user.email 'info@shikakin.jp'
-          git add -- '*/index.html'
           git commit -m 'Auto-build partner clinic LPs'
           git push
