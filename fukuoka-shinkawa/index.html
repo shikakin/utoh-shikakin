@@ -1304,8 +1304,8 @@
   .staff-photo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center 32%;
+    object-fit: contain;
+    object-position: center center;
     display: block;
   }
 
@@ -1423,7 +1423,8 @@
     opacity: 1 !important;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
+    object-position: center center !important;
   }
 
   @media (max-width: 759px) {
